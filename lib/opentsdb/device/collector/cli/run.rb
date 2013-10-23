@@ -19,7 +19,7 @@ module Opentsdb
 
           def setup_logging
             require 'logger'
-            ::Celluloid.logger = ::Logger.new(STDOUT)
+            ::Celluloid.logger = ::Logger.new('/var/log/opentsdb-device-collector.log')
           end
 
           def setup_traps

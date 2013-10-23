@@ -73,7 +73,7 @@ module Opentsdb
               when /^\s*IDB not known\s+=\s(\d+)\s*$/
                 data << {:metric => 'network.dhcp.snooping.idb', :timestamp => timestamp, :value => $1, :tags => "host=#{@hostname}"}
               when /^\s*Queue full\s+=\s(\d+)\s*$/
-                data << {:metric => 'network.dhcp.snooping.idb', :timestamp => timestamp, :value => $1, :tags => "host=#{@hostname}"}
+                data << {:metric => 'network.dhcp.snooping.full', :timestamp => timestamp, :value => $1, :tags => "host=#{@hostname}"}
               when /^\s*Interface is in errdisabled\s+=\s(\d+)\s*$/
                 data << {:metric => 'network.dhcp.snooping.errdisabled', :timestamp => timestamp, :value => $1, :tags => "host=#{@hostname}"}
               when /^\s*Rate limit exceeded\s+=\s(\d+)\s*$/

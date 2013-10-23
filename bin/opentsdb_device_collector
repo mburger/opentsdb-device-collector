@@ -12,15 +12,12 @@ options = { :daemonize => false }
 opts = OptionParser.new do |opts|
   opts.banner = <<-EOF
 Usage:
-opentsdb_device_collector [-c <config file> ] [-d]
+opentsdb_device_collector [-c <config file> ]
 
 Options:
 EOF
   opts.on("-cCONFIG", "--config-file CONFIG", "Configuration File") do |op|
     options[:config] = op
-  end
-  opts.on("-d", "--daemonize", "Daemonize") do |op|
-    options[:daemonize] = op
   end
   opts.on("-h", "--help", "Show this Message") do |op|
     puts opts
