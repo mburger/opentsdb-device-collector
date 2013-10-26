@@ -16,6 +16,8 @@ module Opentsdb
           end
 
           def connect
+            # delay the reconnect attempts if the actor crashes
+            sleep 1
             @socket = TCPSocket.new(@options['host'], @options['port'])
           end
 

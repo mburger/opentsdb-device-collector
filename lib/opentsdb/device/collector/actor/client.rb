@@ -9,11 +9,11 @@ module Opentsdb
           def initialize(hostname, options)
             @hostname = hostname
             @options = options
-            async.connect
+            async.connect_types
             async.start
           end
 
-          def connect
+          def connect_types
             @collector_types = {}
             @options['types'].each do |type, options|
               @collector_types[type] = Opentsdb::Device::Collector::Type.const_get(type.capitalize).new(@hostname, options)

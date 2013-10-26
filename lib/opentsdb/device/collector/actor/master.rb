@@ -15,12 +15,14 @@ module Opentsdb
             @options['devices'].each do |hostname, options|
               @collectors.add(Opentsdb::Device::Collector::Actor::Client, as: hostname.to_sym, args: [hostname, options])
             end
-            @opentsdb_client = Opentsdb::Device::Collector::Actor::OpentsdbClient.supervise_as(:opentsdb, @options['opentsdb'])
+            Opentsdb::Device::Collector::Actor::OpentsdbClient.supervise_as(:opentsdb, @options['opentsdb'])
+            Opentsdb::Device::Collector::Actor::McoClient.supervise_as(:mco, @options['mco'])
           end
 
           def finally
             @collectors.async.terminate
-            @opentsdb_client.async.terminate
+            Celluloid::Actor[:mco].async.terminate
+            Celluloid::Actor[:opentsdb].async.terminate
           end
 
         end

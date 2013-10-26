@@ -21,7 +21,7 @@ module Opentsdb
             begin
               @ssh.connect
             rescue Exception => e
-              # Maybe the Switch is not responding ?
+              # Maybe the Device is not responding ?
               # In any case, sleep 20 seconds to delay the actor respawn
               sleep 20
               raise e

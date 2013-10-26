@@ -8,12 +8,12 @@ module Opentsdb
           def initialize(hostname, options)
             @hostname = hostname
             @ping_count = options['ping_count'] || 3
+            info "[Type Fping] Initialized for: #{@hostname}"
           end
 
           def get_metrics
             data = []
-            info "[Type Fping] Running fping for: #{@hostname}"
-            out = `bash -c 'fping -c #{@ping_count} -sq #{@hostname} 2>&1'`
+            out = `fping -c #{@ping_count} -sq #{@hostname} 2>&1`
             timestamp = Time.now.to_i
             out.each_line do |line|
               case line
