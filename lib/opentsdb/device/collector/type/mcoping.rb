@@ -26,12 +26,14 @@ module Opentsdb
               data << {:metric => 'mcoping.rsp', :timestamp => timestamp, :value => val, :tags => "host=#{@hostname} mcohost=#{resp[:sender]}"}
               data << {:metric => 'mcoping.statuscode', :timestamp => timestamp, :value => resp[:statuscode], :tags => "host=#{@hostname} mcohost=#{resp[:sender]}"}
             end
-            max_rtt = tmp[:rtt].max
-            min_rtt = tmp[:rtt].min
-            avg_rtt = (tmp[:rtt].inject(:+) / tmp[:count])
-            data << {:metric => 'mcoping.max', :timestamp => timestamp, :value => max_rtt, :tags => "host=#{@hostname}"}
-            data << {:metric => 'mcoping.min', :timestamp => timestamp, :value => min_rtt, :tags => "host=#{@hostname}"}
-            data << {:metric => 'mcoping.avg', :timestamp => timestamp, :value => avg_rtt, :tags => "host=#{@hostname}"}
+            unless tmp[:rtt].empty? || tmp[:rtt].nil? || (tmp[:count] == 0)
+              max_rtt = tmp[:rtt].max
+              min_rtt = tmp[:rtt].min
+              avg_rtt = (tmp[:rtt].inject(:+) / tmp[:count])
+              data << {:metric => 'mcoping.max', :timestamp => timestamp, :value => max_rtt, :tags => "host=#{@hostname}"}
+              data << {:metric => 'mcoping.min', :timestamp => timestamp, :value => min_rtt, :tags => "host=#{@hostname}"}
+              data << {:metric => 'mcoping.avg', :timestamp => timestamp, :value => avg_rtt, :tags => "host=#{@hostname}"}
+            end
             return data
           end
 
