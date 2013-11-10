@@ -9,6 +9,7 @@ module Opentsdb
             @hostname = hostname
             @options = options
             @interfaces = @options['interfaces'] || []
+            @connected = false
             start
           end
 
@@ -20,20 +21,21 @@ module Opentsdb
                                                                 :port     => @options['port'])
             begin
               @ssh.connect
+              @connected = true
             rescue Exception => e
-              # Maybe the Device is not responding ?
-              # In any case, sleep 20 seconds to delay the actor respawn
-              sleep 20
-              raise e
+              sleep 5
+              retry
             end
           end
 
           def get_metrics
             data = []
-            get_cpu(data)
-            get_dhcp_snooping(data)
-            @interfaces.each do |int|
-              get_interface(int, data)
+            if @connected
+              get_cpu(data)
+              get_dhcp_snooping(data)
+              @interfaces.each do |int|
+                get_interface(int, data)
+              end
             end
             return data
           end
