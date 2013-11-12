@@ -10,7 +10,6 @@ module Opentsdb
             @options = options
             @interfaces = @options['interfaces'] || []
             @connected = false
-            start
           end
 
           def start
@@ -23,13 +22,13 @@ module Opentsdb
               @ssh.connect
               @connected = true
             rescue Exception => e
-              sleep 5
-              retry
+              error "#{@hostname} | #{e.class} -> #{e}"
             end
           end
 
           def get_metrics
             data = []
+            start unless @connected
             if @connected
               get_cpu(data)
               get_dhcp_snooping(data)
