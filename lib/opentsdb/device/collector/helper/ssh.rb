@@ -79,9 +79,6 @@ module Opentsdb
                 break
               end
             end
-            line.each_line do |l|
-              puts "--- SSH (IN)  <= #{l.strip}" if @debug
-            end
             line
           end
 

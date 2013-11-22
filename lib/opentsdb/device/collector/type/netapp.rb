@@ -30,22 +30,11 @@ module Opentsdb
             start unless @connected
             if @connected
               timestamp = Time.now.to_i
-              metrics = [ 'ifnet:e1b:recv_packets', 'ifnet:e1b:send_packets',
-                          'ifnet:e1b:recv_data', 'ifnet:e1b:send_data',
-                          'nfsv3:nfs:nfsv3_ops', 'nfsv3:nfs:nfsv3_read_latency',
-                          'nfsv3:nfs:nfsv3_read_ops', 'nfsv3:nfs:nfsv3_write_latency',
-                          'nfsv3:nfs:nfsv3_write_ops', 'nfsv3:nfs:nfsv3_avg_op_latency',
-                          'processor:processor0:processor_busy', 'processor:processor1:processor_busy',
-                          'processor:processor2:processor_busy', 'processor:processor3:processor_busy',
-                          'system:system:read_ops', 'system:system:sys_read_latency', 'system:system:write_ops',
-                          'system:system:sys_write_latency', 'system:system:sys_avg_latency', 'wafl:wafl:wafl_memory_free',
-                          'wafl:wafl:wafl_memory_used', 'ext_cache_obj:ec0:usage', 'ext_cache_obj:ec0:hit_percent',
-                          'ext_cache_obj:ec0:miss' ]
-              out = @ssh.command("stats show #{metrics.join(' ')}")
-              metrics.each do |met|
+              out = @ssh.command("stats show #{@options['metrics'].join(' ')}")
+              @options['metrics'].each do |met|
                 val = out.scan(/#{met}:(\d+)/).flatten.first
                 met = met.gsub(/:/, '.')
-                data << {:metric => met, :timestamp => timestamp, :value => val, :tags => "host=#{@hostname}"}
+                data << {:metric => "netapp.#{met}", :timestamp => timestamp, :value => val, :tags => "host=#{@hostname}"}
               end
             end
             return data
